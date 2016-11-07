@@ -299,8 +299,8 @@ trait DiscourseApi extends DiscourseReads {
         throw new RuntimeException("failed to parse body as json", e)
     }
 
-    if (json.keys.contains("errors"))
-      Left((json \ "errors").asOpt[List[String]].getOrElse((json \ "errors").as[String] :: List()))
+    if (json.keys.contains("success") && !(json \ "success").as[Boolean])
+      Left((json \ "message").as[String] :: List())
     else
       Right(json)
   }
