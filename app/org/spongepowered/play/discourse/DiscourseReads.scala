@@ -23,7 +23,7 @@ trait DiscourseReads {
     (JsPath \ "name").read[String] and
     (JsPath \ "automatic").read[Boolean] and
     (JsPath \ "user_count").read[Int] and
-    (JsPath \ "visible").read[Boolean]
+    (JsPath \ "visibility_level").read[Int]
   )(DiscourseGroup.apply _)
 
   implicit val userReads: Reads[DiscourseUser] = (
