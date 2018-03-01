@@ -1,19 +1,14 @@
 name := "play-discourse"
-
 organization := "org.spongepowered"
-
-version := "1.1.0-SNAPSHOT"
+version := "2.0.0-SNAPSHOT"
 
 lazy val `playdiscourse` = (project in file(".")).enablePlugins(PlayScala)
 
-scalaVersion := "2.11.7"
-
+scalaVersion := "2.12.4"
+resolvers += "scalaz-bintray" at "https://dl.bintray.com/scalaz/releases"
 libraryDependencies ++= Seq(ws, specs2 % Test)
 
-unmanagedResourceDirectories in Test <+=  baseDirectory ( _ /"target/web/public/test" )  
-
-resolvers += "scalaz-bintray" at "https://dl.bintray.com/scalaz/releases"
-
+unmanagedResourceDirectories in Test +=  (baseDirectory.value / "target/web/public/test")
 crossPaths := false
 
 credentials += Credentials(
@@ -23,13 +18,14 @@ credentials += Credentials(
   sys.props.getOrElse("repo.pwd", "")
 )
 
-publishTo <<= version { (v: String) =>
+publishTo := {
   val repoName = sys.props.get("repo.name")
   val repoUrl = sys.props.get("repo.url")
-  if (repoName.isDefined && repoUrl.isDefined)
+  if (repoName.isDefined && repoUrl.isDefined) {
     Some(repoName.get at repoUrl.get)
-  else
-    Some(Resolver.file("file", new File(Path.userHome.absolutePath + "/.ivy2/local")))
+  } else {
+    None
+  }
 }
 
 // Replace default publish task with the one from sbt-aether-deploy
