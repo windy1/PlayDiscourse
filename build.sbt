@@ -6,6 +6,7 @@ lazy val `playdiscourse` = (project in file(".")).enablePlugins(PlayScala)
 
 scalaVersion := "2.12.4"
 resolvers += "scalaz-bintray" at "https://dl.bintray.com/scalaz/releases"
+
 libraryDependencies ++= Seq(ws, specs2 % Test)
 
 unmanagedResourceDirectories in Test +=  (baseDirectory.value / "target/web/public/test")
@@ -18,15 +19,14 @@ credentials += Credentials(
   sys.props.getOrElse("repo.pwd", "")
 )
 
+publishMavenStyle := true
 publishTo := {
   val repoName = sys.props.get("repo.name")
   val repoUrl = sys.props.get("repo.url")
-  if (repoName.isDefined && repoUrl.isDefined) {
+
+  if (repoName.isDefined && repoUrl.isDefined)
     Some(repoName.get at repoUrl.get)
-  } else {
+  else
     None
-  }
 }
 
-// Replace default publish task with the one from sbt-aether-deploy
-overridePublishSettings
