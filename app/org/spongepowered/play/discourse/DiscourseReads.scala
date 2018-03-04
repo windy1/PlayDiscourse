@@ -8,7 +8,7 @@ import play.api.libs.json._
 import play.api.libs.functional.syntax._
 
 /**
-  * A trait to mixin for implicit [[Reads]] for the Discourse models.
+  * A trait to mixin for implicit Reads for the Discourse models.
   */
 trait DiscourseReads {
 

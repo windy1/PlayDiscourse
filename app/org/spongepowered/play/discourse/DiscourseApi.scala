@@ -125,7 +125,7 @@ trait DiscourseApi extends DiscourseReads {
       DataPart("api_key", this.key)
         :: DataPart("api_username", username)
         :: DataPart("username", username)
-        :: FilePart("file", fileName, Some("image/jpeg"), FileIO.fromFile(path.toFile))
+        :: FilePart("file", fileName, Some("image/jpeg"), FileIO.fromPath(path))
         :: DataPart("type", "avatar")
         :: DataPart("synchronous", "true")
         :: List())
@@ -250,7 +250,7 @@ trait DiscourseApi extends DiscourseReads {
 
 
   /**
-    * Awaits the completion of the specified [[Future]] based on the configured
+    * Awaits the completion of the specified Future based on the configured
     * timeout.
     *
     * @param future Future to wait for
@@ -314,7 +314,7 @@ trait DiscourseApi extends DiscourseReads {
   def validateLeft(response: WSResponse): List[String] = validate(response).left.getOrElse(List.empty)
 
   /**
-    * Validates and returns an optional [[JsObject]].
+    * Validates and returns an optional JsObject.
     *
     * @param response Response to validate
     * @return         Json result

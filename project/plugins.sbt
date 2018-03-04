@@ -4,9 +4,8 @@ logLevel := Level.Warn
 evictionWarningOptions in update := EvictionWarningOptions.default
   .withWarnTransitiveEvictions(false)
   .withWarnDirectEvictions(false)
+  .withWarnScalaVersionEviction(false)
 
 resolvers += "Typesafe repository" at "http://repo.typesafe.com/typesafe/releases/"
 
-addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.6.11")
-
-addSbtPlugin("no.arktekk.sbt" % "aether-deploy" % "0.21")
+addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.6.12")
