@@ -28,16 +28,16 @@ val javadocJar = task<Jar>("javadocJar") {
 }
 
 val spongeRepo by project
-val spongeUser by project
+val spongeUsername by project
 val spongePassword by project
 
 publishing {
     spongeRepo?.let { repo ->
         repositories {
             maven(repo) {
-                if (spongeUser != null && spongePassword != null) {
+                if (spongeUsername != null && spongePassword != null) {
                     credentials {
-                        username = spongeUser?.toString()
+                        username = spongeUsername?.toString()
                         password = spongePassword?.toString()
                     }
                 }
