@@ -151,16 +151,18 @@ trait DiscourseApi extends DiscourseReads {
     * @param poster       Poster username
     * @param title        Topic title
     * @param content      Topic raw content
-    * @param categorySlug Category slug
+    * @param categoryId   Optional category id
     * @return             New topic or list of errors
     */
   def createTopic(poster: String, title: String, content: String,
-                  categorySlug: String = null): Future[Either[List[String], DiscoursePost]] = {
+                  categoryId: Option[Int]): Future[Either[List[String], DiscoursePost]] = {
     var params = ApiParams(poster) + (
       "title" -> Seq(title),
       "raw" -> Seq(content))
-    if (categorySlug != null)
-      params += "category" -> Seq(categorySlug)
+
+    categoryId.foreach { categoryId =>
+      params += "category" -> Seq(categoryId.toString)
+    }
 
     // Note: Oddly enough, occasionally, discourse will choose to return a
     // "deleted" post if the content is the same when created in rapid
@@ -198,18 +200,24 @@ trait DiscourseApi extends DiscourseReads {
     *
     * @param username   Username to update as
     * @param topicId    Topic ID
-    * @param title      Topic title
-    * @param categoryId Category ID
+    * @param title      Optional new topic title
+    * @param categoryId Optional new category ID
     * @return           List of errors
     */
-  def updateTopic(username: String, topicId: Int, title: String = null, categoryId: Int = -1): Future[List[String]] = {
-    if (title == null && categoryId == -1)
+  def updateTopic(username: String, topicId: Int, title: Option[String], categoryId: Option[Int]): Future[List[String]] = {
+    if (title.isEmpty && categoryId.isEmpty)
       return Future(List.empty)
+
     var params = ApiParams(username) + ("topic_id" -> Seq(topicId.toString))
-    if (title != null)
+
+    title.foreach { title =>
       params += "title" -> Seq(title)
-    if (categoryId != -1)
+    }
+
+    categoryId.foreach { categoryId =>
       params += "category_id" -> Seq(categoryId.toString)
+    }
+
     this.request(s"${this.url}/t/$topicId").put(params).map(validateLeft)
   }
 
