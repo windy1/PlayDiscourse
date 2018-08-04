@@ -7,10 +7,10 @@ repositories {
     mavenCentral()
 }
 
-val playVersion = "2.6.12"
+val playVersion = "2.6.17"
 
 dependencies {
-    compile("org.scala-lang", "scala-library", "2.12.4")
+    compile("org.scala-lang", "scala-library", "2.12.6")
     compile("com.typesafe.play", "play_2.12", playVersion)
     compile("com.typesafe.play", "play-ws_2.12", playVersion)
 }
@@ -27,9 +27,9 @@ val javadocJar = task<Jar>("javadocJar") {
     from(scaladoc.destinationDir)
 }
 
-val spongeRepo by project
-val spongeUsername by project
-val spongePassword by project
+val spongeRepo: String? by project
+val spongeUsername: String? by project
+val spongePassword: String? by project
 
 publishing {
     spongeRepo?.let { repo ->
@@ -37,8 +37,8 @@ publishing {
             maven(repo) {
                 if (spongeUsername != null && spongePassword != null) {
                     credentials {
-                        username = spongeUsername?.toString()
-                        password = spongePassword?.toString()
+                        username = spongeUsername
+                        password = spongePassword
                     }
                 }
             }
