@@ -304,7 +304,7 @@ trait DiscourseApi extends DiscourseReads {
       json = response.json.as[JsObject]
     } catch {
       case e: Exception =>
-        throw new RuntimeException("failed to parse body as json", e)
+        throw new RuntimeException("failed to parse body [" + response.body + "] as json", e)
     }
 
     if (json.keys.contains("success") && !(json \ "success").as[Boolean])
