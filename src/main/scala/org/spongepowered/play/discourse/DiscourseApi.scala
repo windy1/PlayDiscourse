@@ -218,7 +218,7 @@ trait DiscourseApi extends DiscourseReads {
       params += "category_id" -> Seq(categoryId.toString)
     }
 
-    this.request(s"${this.url}/t/$topicId").put(params).map(validateLeft)
+    this.request(s"${this.url}/t/-/$topicId").put(params).map(validateLeft)
   }
 
   /**
