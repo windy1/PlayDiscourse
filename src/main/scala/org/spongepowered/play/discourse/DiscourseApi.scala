@@ -299,18 +299,22 @@ trait DiscourseApi extends DiscourseReads {
         s"Body: ${response.body}")
     }
 
-    var json: JsObject = null
-    try {
-      json = response.json.as[JsObject]
-    } catch {
-      case e: Exception =>
-        throw new RuntimeException(s"failed to parse body [${response.body}] as json", e)
-    }
+    if (response.status < 200 || response.status >= 300) {
+      Left(List(s"Response code ${response.status}: ${response.body}"))
+    } else {
+      var json: JsObject = null
+      try {
+        json = response.json.as[JsObject]
+      } catch {
+        case e: Exception =>
+          throw new RuntimeException(s"failed to parse body [${response.body}] as json", e)
+      }
 
-    if (json.keys.contains("success") && !(json \ "success").as[Boolean])
-      Left((json \ "message").as[String] :: List())
-    else
-      Right(json)
+      if (json.keys.contains("success") && !(json \ "success").as[Boolean])
+        Left((json \ "message").as[String] :: List())
+      else
+        Right(json)
+    }
   }
 
   /**
