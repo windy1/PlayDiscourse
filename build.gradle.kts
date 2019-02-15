@@ -7,10 +7,10 @@ repositories {
     mavenCentral()
 }
 
-val playVersion = "2.6.17"
+val playVersion = "2.7.0"
 
 dependencies {
-    compile("org.scala-lang", "scala-library", "2.12.6")
+    compile("org.scala-lang", "scala-library", "2.12.8")
     compile("com.typesafe.play", "play_2.12", playVersion)
     compile("com.typesafe.play", "play-ws_2.12", playVersion)
 }
